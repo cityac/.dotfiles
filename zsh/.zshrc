@@ -9,6 +9,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="robbyrussell"
+#ZSH_THEME="cloud"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -70,7 +71,12 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(
+    git
+    docker
+    sudo
+    1password
+)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -96,43 +102,116 @@ source $ZSH/oh-my-zsh.sh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 #
+
+# Custom functions
+
+#Run tmux tokenizer by Ctrl+F shortcut
+# Define a function to run the tmux-sessionizer script
+# run_tmux_sessionizer() {
+#     ~/personal/tmux/tmux-sessionizer
+# }
+
+# Register the function as a ZLE widget
+# zle -N run_tmux_sessionizer
+
+# Bind Ctrl+F to the widget
+# bindkey '^F' run_tmux_sessionizer
+# END Run tmux tokenizer by Ctrl+F shortcut
+
+# Make directory function
+# Makes new directory and navigate to it
+
+unalias md
+md() {
+  mkdir -p "$@" && cd "$@"
+}
+
+# Displays text in a variety of colors using ANSI escape codes.
+# Each color corresponds to a foreground color code (30 to 37),
+# which are part of the standard Bash color palette.
+# Example: Black, Red, Green, Yellow, Blue, Magenta, Cyan, White.
+# The color of the text is reset to the terminal's default after each line.
+print-colors() {
+    for i in {30..37}; do
+        # Print the colored text
+        echo -e "\e[${i}mThis is color code: ${i}\e[0m"
+    done
+    # Print the actual code used for demonstration
+    printf "Usage example for color code 31 (red): %s" ' echo -e "\e[31mThis is color code: 31\e[0m"'
+}
+
+
 # Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-source ~/.zsh_profile
+alias aliases="grep -E '^(alias|# alias)' ~/.zshrc"
+# alias ls
+alias la="ls -lsah | lolcat"
+alias l="ls | lolcat"
+# alias tmux
+# alias tmux sessionizer
+alias ts="~/personal/tmux/tmux-sessionizer"
+# alias tmux terminal
+alias tt="tmux attach-session -t 'TMUX terminal'"
+# alias tmux cheat sheet
+alias cht="~/personal/tmux/tmux-cht"
+# alias tmux terminal split horizontaly
+alias tth="tmux split-window -h"
+# alias tmux terminal split vertically
+alias ttv="tmux split-window -v"
+# alias nvim
+alias h="nvim ~"
+alias zshconfig="nvim ~/.zshrc"
+alias ohmyzsh="nvim ~/.oh-my-zsh"
+# alias docker&kuber
+alias dk="docker"
+alias dkps="docker ps"
+alias dkst="docker stats"
+alias k="kubectl"
+# alisa yarn
+alias start="yarn start"
+alias dev="yarn dev"
+alias text="yarn test"
+# alias aws
+alias dyn="aws dynamodb"
+#  alias Yabai
+alias source_yabai="source ~/.config/yabai/yabairc"
+alias bsp="yabai -m config layout bsp"
+alias managed="yabai -m config layout managed"
+alias layoff="yabai -m config layout float"
+# alias system
+alias kill="kill -9"
+alias jobs="jobs -l"
 
-alias luamake=/home/mpaulson/personal/lua-language-server/3rd/luamake/luamake
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# bun completions
-[ -s "/home/mpaulson/.bun/_bun" ] && source "/home/mpaulson/.bun/_bun"
 
-# Bun
-export BUN_INSTALL="/home/mpaulson/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
+export CONFLUENT_HOME=/Users/s.aituhanov/confluent-7.4.0
+export PATH=$PATH:$CONFLUENT_HOME/bin
 
-# Bun
-export BUN_INSTALL="/home/mpaulson/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
 
-# pnpm
-export PNPM_HOME="/home/mpaulson/.local/share/pnpm"
-export PATH="$PNPM_HOME:$PATH"
-# pnpm end
-# Turso
-export PATH="/home/mpaulson/.turso:$PATH"
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/mpaulson/.local/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/mpaulson/.local/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/mpaulson/.local/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/mpaulson/.local/anaconda3/bin:$PATH"
+# look ansible/amazon/.zshrc
+ export AWS_DEFAULT_REGION=
+ export AWS_SECRET_ACCESS_KEY=
+ export AWS_ACCESS_KEY_ID=AK=
+
+source ~/.bash-powerline.sh
+
+# Created by `pipx` on 2024-11-08 20:46:58
+export PATH="$PATH:/Users/s.aituhanov/.local/bin"
+export PATH="/usr/local/bin:$PATH"
+
+
+# echo "$TERM_PROGRAM"
+
+if [[ "$TERM_PROGRAM" == "WarpTerminal" ]]; then
+
+    if ! tmux has-session -t "TMUX terminal" 2> /dev/null; then
+        #echo NOSESSION
+        tmux new-session -s "TMUX terminal" -d
     fi
 fi
-unset __conda_setup
-# <<< conda initialize <<<
-

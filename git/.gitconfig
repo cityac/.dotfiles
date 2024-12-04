@@ -1,0 +1,20 @@
+[alias]
+	wt = worktree
+	co = checkout
+	br = branch
+	ci = commit
+	st = status
+	pushf = push --force-with-lease
+	author = commit --amend --author '//todo'
+	amendcommit = !git add . && git commit --amend --no-edit && git pushf
+	resetto = !sh -c \"git fetch && git reset --hard origin/$1\" -
+
+[user]
+	name = 
+	email = 
+
+[includeIf "gitdir:~/work/**"]
+	path = ~/.gitconfig-mmd
+
+[includeIf "gitdir:~/personal/**"]
+	path = ~/.gitconfig-personal
