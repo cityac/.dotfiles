@@ -18,3 +18,6 @@
 
 [includeIf "gitdir:~/personal/**"]
 	path = ~/.gitconfig-personal
+
+[remote "origin"]
+	fetch = +refs/heads/*:refs/remotes/origin/*
