@@ -178,6 +178,7 @@ alias bsp="yabai -m config layout bsp"
 alias managed="yabai -m config layout managed"
 alias layoff="yabai -m config layout float"
 # alias system
+alias clear="clear && pwd"
 alias kill="kill -9"
 alias jobs="jobs -l"
 
@@ -194,10 +195,9 @@ export PATH=$PATH:$CONFLUENT_HOME/bin
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-# look ansible/amazon/.zshrc
  export AWS_DEFAULT_REGION=
  export AWS_SECRET_ACCESS_KEY=
- export AWS_ACCESS_KEY_ID=AK=
+ export AWS_ACCESS_KEY_ID=
 
 source ~/.bash-powerline.sh
 
